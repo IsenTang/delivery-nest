@@ -1,18 +1,26 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
 
 /* config module */
-import { ConfigModule } from '@nestjs/config';
+import { ConfigModule,ConfigService } from '@nestjs/config';
 import configSetting from './config.setting';
 
+/* user module */
+import { UserModule } from './features/user/user.module'
+
 @Module({
-    // imports: [MongooseModule.forRoot('mongodb://localhost/delivery')],
     imports: [
-        ConfigModule.forRoot(configSetting)
-    ],
-    controllers: [AppController],
-    providers: [AppService],
+        ConfigModule.forRoot(configSetting),
+        MongooseModule.forRootAsync({
+            imports: [ConfigModule],
+            useFactory: async (configService: ConfigService) => ({
+                uri: configService.get('MONGODB_URI'),
+                useNewUrlParser: true,
+                useUnifiedTopology: true
+            }),
+            inject: [ConfigService],
+        }),
+        UserModule
+    ]
 })
 export class AppModule {}
