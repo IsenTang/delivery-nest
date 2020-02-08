@@ -1,5 +1,5 @@
 import { NestFactory } from '@nestjs/core';
-import * as csurf from 'csurf';
+// import * as csurf from 'csurf';
 import { AppModule } from './app.module';
 import { ValidationPipe } from './tools/validation.pipe';
 import { HttpExceptionFilter } from './tools/httpExceptionFilter';
@@ -13,7 +13,7 @@ async function bootstrap () {
     const port = config.get('PORT');
 
     /* 防止csurf */
-    app.use(csurf());
+    // app.use(csurf());
 
     /* 验证 */
     app.useGlobalPipes(new ValidationPipe());

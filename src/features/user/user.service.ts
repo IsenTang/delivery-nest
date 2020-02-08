@@ -1,9 +1,7 @@
-import { Model } from 'mongoose';
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import * as _ from 'lodash';
-import {  } from './dto/user.registe.dto';
-import { User } from './interfaces/user.interface';
+import { Woops } from './../../tools/woops';
 
 /* tools */
 import {  encrypte, sign, compare } from '../../services/login';
@@ -11,7 +9,7 @@ import {  encrypte, sign, compare } from '../../services/login';
 @Injectable()
 export class UserService {
 
-    constructor (@InjectModel('users') private readonly userModel: Model<User> ) {}
+    constructor (@InjectModel('users') private readonly userModel ) {}
 
     /*
      * 登录
@@ -21,7 +19,7 @@ export class UserService {
         const result = await this.userModel.findOne({ username });
 
         if (_.isEmpty(result)) {
-        //    throw new Woops('No user', 'No user');
+            throw new Woops('No-user', 'No user');
         }
 
         const isMatch = await compare(password, result.password);
@@ -29,13 +27,13 @@ export class UserService {
         if (isMatch) {
             return result;
         }
-        // throw new Woops('Password uncorrected', 'Password uncorrected');
+        throw new Woops('Password-uncorrected', 'Password uncorrected');
     }
 
     /*
      * 注册
      */
-    async register ({ password, username }): Promise<User> {
+    async register ({ password, username }): Promise<object> {
         /* hash 密码 */
         const hash = await encrypte(password);
 
@@ -60,6 +58,15 @@ export class UserService {
             return true;
         }
         return false;
+    }
+
+    /**
+ * 生成token
+ */
+    async createToken (data): Promise<string> {
+        const result = await sign(data);
+
+        return result;
     }
 
 }

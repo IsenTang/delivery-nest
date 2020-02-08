@@ -1,7 +1,8 @@
-import { Controller,Get, Post,Body } from '@nestjs/common';
+import { Controller,Post,Body } from '@nestjs/common';
+import * as _ from 'lodash';
 import { UserService } from './user.service';
-import { User } from './interfaces/user.interface';
-import { UserRegisteDto } from './dto/user.registe.dto';
+import { UserRegisterDto } from './dto/user.register.dto';
+import { UserLoginDto } from './dto/user.login.dto';
 import { bsDecode } from '../../services/login';
 import { Woops } from './../../tools/woops';
 
@@ -12,18 +13,31 @@ export class UserController {
         private readonly userService: UserService
     ) {}
 
-    @Get('login')
-    login (): string {
+    /* 登录 */
+    @Post('login')
+    async login (@Body() userLoginDto: UserLoginDto): Promise<object> {
 
-        return 'test';
+        const username = await bsDecode(userLoginDto.username);
+        const password = await bsDecode(userLoginDto.password);
+
+        const user = (await this.userService.login({ username, password })).toObject();
+
+        /* 生成token */
+        const token = await this.userService.createToken(user);
+
+        /* 加入token */
+        _.set(user, 'token', token);
+
+        return user;
     }
 
+    /* 注册 */
     @Post('register')
-    async register (@Body() userRegisteDto:UserRegisteDto): Promise<User>{
+    async register (@Body() userRegisterDto:UserRegisterDto): Promise<object>{
 
         /* 解码 */
-        const username = (userRegisteDto.username);
-        const password = (userRegisteDto.password);
+        const username = await bsDecode(userRegisterDto.username);
+        const password = await bsDecode(userRegisterDto.password);
 
         const isDuplicate = await this.userService.checkDuplicate({ username });
 
