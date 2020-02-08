@@ -6,12 +6,12 @@ export class Woops extends HttpException {
     private errorMessage: string;
     private errorStatus: string;
 
-    constructor (status, message, details) {
+    constructor (status, message, details = {}) {
         super(message,500);
 
         this.errorStatus = status;
         this.errorMessage = message;
-        this.details = details || {};
+        this.details = details;
     }
 
     getErrorStatus (){

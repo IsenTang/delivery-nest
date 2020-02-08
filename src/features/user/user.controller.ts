@@ -3,6 +3,7 @@ import { UserService } from './user.service';
 import { User } from './interfaces/user.interface';
 import { UserRegisteDto } from './dto/user.registe.dto';
 import { bsDecode } from '../../services/login';
+import { Woops } from './../../tools/woops';
 
 @Controller('user')
 export class UserController {
@@ -27,7 +28,7 @@ export class UserController {
         const isDuplicate = await this.userService.checkDuplicate({ username });
 
         if (isDuplicate) {
-            // throw new Woops('user duplicate', 'user duplicate');
+            throw new Woops('user-duplicate', 'user duplicate');
         }
 
         const user = await this.userService.register({ username,password });
