@@ -7,6 +7,7 @@ import configSetting from './config.setting';
 
 /* user module */
 import { UserModule } from './features/user/user.module';
+import { RestaurantModule } from './features/restaurant/restaurant.module';
 
 @Module({
     imports: [
@@ -20,7 +21,8 @@ import { UserModule } from './features/user/user.module';
             }),
             inject: [ ConfigService ],
         }),
-        UserModule
+        UserModule,
+        RestaurantModule
     ]
 })
 export class AppModule {}
