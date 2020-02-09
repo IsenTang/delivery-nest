@@ -61,8 +61,8 @@ export class UserService {
     }
 
     /**
- * 生成token
- */
+     * 生成token
+     */
     async createToken (data): Promise<string> {
         const result = await sign(data);
 
