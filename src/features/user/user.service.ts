@@ -1,3 +1,4 @@
+import { canon } from 'src/tools/utils';
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import * as _ from 'lodash';
@@ -67,6 +68,13 @@ export class UserService {
         const result = await sign(data);
 
         return result;
+    }
+
+    /**
+     * 查找特定用户
+     */
+    async findUser ({ id }): Promise<any> {
+        return await this.userModel.findOne({ _id: canon(id) });
     }
 
 }

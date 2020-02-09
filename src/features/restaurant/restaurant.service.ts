@@ -16,8 +16,19 @@ export class RestaurantService {
             items: { $exists: true },
         };
 
-        const result = await this.restaurantModel.find(query);
+        return await this.listRestaurant(query);
 
-        return result;
+    }
+
+    /* list */
+    async listRestaurant (query): Promise<any>{
+
+        return await this.restaurantModel.find(query).lean().exec();
+    }
+
+    /* one */
+    async findRestaurant (query): Promise<any>{
+
+        return await this.restaurantModel.findOne(query).lean().exec();
     }
 }

@@ -3,7 +3,6 @@ import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { RestaurantController } from './restaurant.controller';
 import { RestaurantService } from './restaurant.service';
-import { UserModule } from './../user/user.module';
 import { RestaurantSchema } from './schema/restaurant.schema';
 
 @Module({
@@ -13,10 +12,10 @@ import { RestaurantSchema } from './schema/restaurant.schema';
                 name: 'restaurants',
                 useFactory: () => RestaurantSchema,
             },
-        ]),
-        UserModule
+        ])
     ],
     controllers: [ RestaurantController ],
-    providers: [ RestaurantService ]
+    providers: [ RestaurantService ],
+    exports: [ RestaurantService ]
 })
 export class RestaurantModule {}
