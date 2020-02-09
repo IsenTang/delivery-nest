@@ -1,6 +1,7 @@
+import { Woops } from './woops';
 import * as _ from 'lodash';
-import Moment from 'moment-timezone';
-import ShortId from 'shortid';
+import * as Moment from 'moment-timezone';
+import * as ShortId from 'shortid';
 import ObjectId from 'bson-objectid';
 
 /**
@@ -23,7 +24,7 @@ export function canon (v) {
 
     /* if not valid, throw error */
     if (!match || !ShortId.isValid(match[2])) {
-        throw new Error('Attempting to convert an invalid ID');
+        throw new Woops('convert-invalid-ID','Attempting to convert an invalid ID');
     }
 
     return v;

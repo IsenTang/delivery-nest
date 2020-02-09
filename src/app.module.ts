@@ -1,3 +1,4 @@
+import { OrderModule } from './features/order/order.module';
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 
@@ -8,6 +9,7 @@ import configSetting from './config.setting';
 /* user module */
 import { UserModule } from './features/user/user.module';
 import { RestaurantModule } from './features/restaurant/restaurant.module';
+import { MenuModule } from './features/menu/menu.module';
 
 @Module({
     imports: [
@@ -22,7 +24,9 @@ import { RestaurantModule } from './features/restaurant/restaurant.module';
             inject: [ ConfigService ],
         }),
         UserModule,
-        RestaurantModule
+        RestaurantModule,
+        MenuModule,
+        OrderModule
     ]
 })
 export class AppModule {}
