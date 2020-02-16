@@ -7,14 +7,14 @@ export class HttpExceptionFilter implements ExceptionFilter {
     catch (woops: Woops, host: ArgumentsHost) {
         const ctx = host.switchToHttp();
         const response = ctx.getResponse<Response>();
-        const status = woops.getErrorStatus();
+        const code = woops.getCode();
         const details = woops.getDetails();
         const message = woops.getMessage();
 
         response
             .status(500)
             .json({
-                status,
+                code,
                 message,
                 details,
                 timestamp: new Date().toISOString(),

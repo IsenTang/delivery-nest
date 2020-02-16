@@ -42,6 +42,7 @@ export class UserController {
         const isDuplicate = await this.userService.checkDuplicate({ username });
 
         if (isDuplicate) {
+
             throw new Woops('user-duplicate', 'user duplicate');
         }
 
